@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { runJourney } from "@/lib/journey";
 import { getLocale } from "@/lib/i18n";
+import TestSheet from "@/components/TestSheet";
 
 export const dynamic = "force-dynamic";
 type Case = { id: string; iso3: string; q?: string; bg?: string; expect: "journey" | "abstain" | "missing" | "answer" };
@@ -28,6 +29,7 @@ export default function Evaluation() {
   // Value over the single-template alternative: same country, four explicit backgrounds -> how different are the texts?
   const base: any = runJourney({ iso3: "FRA", background: "christian" });
   const diffs = BGS.slice(1).map((b) => { const r: any = runJourney({ iso3: "FRA", background: b }); return { b, sim: jac(base.detail.en, r.detail.en), hsim: jac(base.headlines.map((h: any) => h.en).join(" "), r.headlines.map((h: any) => h.en).join(" ")), same: r.template_id === base.template_id }; });
+  const cmp = ["christian", "hindu", "buddhist_ea", "unaffiliated"].map((b) => { const r: any = runJourney({ iso3: "FRA", background: b }); const first = (t: string) => t.split(/(?<=[.!؟])\s/)[0]; return { b, tpl: r.template_id, h: r.headlines[0], d: r.detail, ids: r.detail.claim_ids as string[], first }; });
   // Repeatability: every case run three times must give byte-identical output.
   const stable = CASES.every((c) => { const j = () => JSON.stringify(runJourney({ iso3: c.iso3, background: c.bg, question: c.q })); const a = j(); return a === j() && a === j(); });
   const passed = rows.filter((r) => r.ok).length;
@@ -62,8 +64,46 @@ export default function Evaluation() {
       <h2 className="mt-12 text-2xl font-semibold">{ar ? "اختبار المستفيد: ما أُنجز وما لم يُنجز" : "User testing: what is done and what is not"}</h2>
       <ul className="mt-4 space-y-3 text-lg text-limestone/90">
         <li className="rule pt-3">{ar ? "أُنجز: قياس مسار المهمة في متصفح حقيقي، من الصفحة الرئيسية إلى رحلة مسنَدة بنقرة واحدة، ومن أي نسبة إلى صف مصدرها بنقرة واحدة." : "Done: task-path measurement in a real browser: home to a sourced journey in one click, and from any percentage to its source row in one click."}</li>
-        <li className="rule pt-3">{ar ? "لم يُنجز: اختبار مع قراء من الخلفيات المستهدفة. الخطة: ثمانية قراء على الأقل، ثلاث مهام (فهم مفهوم، إيجاد مصدر رقم، طرح سؤال حكم فيمتنع الأطلس)، وتُسجَّل الأخطاء وتُعدَّل الصياغة قبل 4–6 أكتوبر." : "Not done: testing with readers from the target backgrounds. Plan: at least eight readers, three tasks (grasp a concept, find the source of a number, ask a ruling question and see the atlas abstain), errors logged and wording revised before 4–6 October."}</li>
+        <li className="rule pt-3">{ar ? "لم يُنجز: اختبار مع قراء من الخلفيات المستهدفة. الخطة: ثمانية قراء على الأقل، ثلاث مهام (فهم مفهوم، إيجاد مصدر رقم، طرح سؤال حكم فيمتنع الأطلس)، وتُسجَّل الأخطاء وتُعدَّل الصياغة قبل 4–6 أكتوبر." : "Not done: testing with readers from the target backgrounds. Plan: at least eight readers, three tasks (grasp a concept, find the source of a number, ask a ruling question and see the atlas abstain), errors logged and wording revised before 4–6 October."}</li>
       </ul>
+      <h3 className="mt-8 text-xl font-semibold">{ar ? "الجانب إلى الجانب: قالب واحد مقابل قالب لكل خلفية" : "Side by side: one template versus a template per background"}</h3>
+      <p className="mt-2 text-limestone/85">{ar ? "المخرجات التالية حقيقية: تُولَّد الآن من المحرك لفرنسا بأربع خلفيات صريحة. القالب الواحد كان سيعرض النص الأول نفسه للجميع. الجمل مقتبسة من الحزمة المغلقة وكل مقطع يحمل معرّف مصدره." : "These outputs are real: they are generated now by the engine for France under four explicit backgrounds. A single template would show the first text to everyone. Sentences come from the closed pack and each passage carries its source id."}</p>
+      <div className="sbs mt-4">
+        {cmp.map((c) => (
+          <div key={c.b} className="sbs-col">
+            <p className="kicker">{c.b} · <span className="num">{c.tpl}</span></p>
+            <p className="mt-2 text-lg" dir="auto">{c.h[ar ? "ar" : "en"]}</p>
+            <p className="mt-2 text-sm text-limestone/80" dir="auto">{c.first(c.d[ar ? "ar" : "en"])}</p>
+            <p className="mt-2 text-sm">{c.ids.map((id) => <Link key={id} href={`/references#${id}`} className="latin underline me-2">{id}</Link>)}</p>
+          </div>
+        ))}
+      </div>
+      <h3 className="mt-10 text-xl font-semibold">{ar ? "ورقة اختبار القراء (قابلة للنسخ والطباعة)" : "Reader test sheet (copyable, printable)"}</h3>
+      <p className="mt-2 text-limestone/85">{ar ? "هذه ورقة بروتوكول جاهزة للاستعمال، وليست نتائج. لم يشارك أحد بعد، ولا توجد هنا أي أرقام لمشاركين." : "This is a protocol ready to use, not results. Nobody has taken part yet and there are no participant figures anywhere on this page."}</p>
+      <div className="mt-4"><TestSheet ar={ar} s={ar ? {
+        title: "ورقة اختبار أطلس الدين الإسلامي — قارئ واحد، نحو 10 دقائق",
+        consent: ["المشاركة اختيارية ويمكن التوقف في أي لحظة دون ذكر سبب.", "لا نسأل عن دينك ولا نسجّله ولا نستنتجه؛ إن رغبت اختر «خلفية» على الموقع فقط للتجربة.", "لا اسم ولا بريد ولا تسجيل صوت أو شاشة؛ يدوّن الميسّر ملاحظات مجهولة بخط اليد.", "الموقع نفسه لا يتتبع ولا يحفظ سؤالك؛ الكوكي الوحيد هو اللغة."],
+        tasks: [
+          { t: "المهمة 1 — الفهم: اختر دولة، اقرأ «مفهوماً واحداً»، ثم اشرح بكلماتك جملة واحدة عمّا فهمت.", ok: "يُعدّ ناجحاً إن ذكر القارئ الفكرة الأساسية للمقطع دون تشويه." },
+          { t: "المهمة 2 — المصدر: ابحث عن مصدر إحدى النسب المئوية على صفحة الدولة.", ok: "يُعدّ ناجحاً إن وصل إلى صف المصدر في المراجع دون مساعدة، ويُسجَّل عدد النقرات." },
+          { t: "المهمة 3 — الامتناع: اطرح سؤالاً عن حكم شرعي (مثلاً: هل كذا واجب؟).", ok: "يُعدّ ناجحاً إن فهم القارئ أن الأطلس امتنع وأحال إلى أهل العلم، ولم يعدّ ذلك جواباً." },
+        ],
+        obs: ["القارئ (رقم فقط)", "المهمة", "نجح؟", "نقرات", "أين تعثّر؟", "ماذا اقترح؟"],
+        copy: "انسخ الورقة", copied: "نُسخت", print: "اطبع الورقة",
+        note: "بعد كل جلسة: تُجمع الملاحظات دون هوية، وتُعدَّل الصياغة، ولا تُنشر أرقام إلا بعد إجراء الاختبار فعلاً.",
+      } : {
+        title: "Islamic Religion Atlas test sheet — one reader, about 10 minutes",
+        consent: ["Taking part is voluntary and you can stop at any time without giving a reason.", "We do not ask about, record or infer your religion. If you wish, pick a 'background' on the site only to try the feature.", "No name, email, audio or screen recording; the facilitator takes anonymous handwritten notes.", "The site itself does not track you or store your question; the only cookie is the language."],
+        tasks: [
+          { t: "Task 1 — Understanding: pick a country, read 'one concept', then say in one sentence, in your own words, what you understood.", ok: "Counts as success if the reader states the passage's core idea without distortion." },
+          { t: "Task 2 — Source: find the source of one of the percentages on a country page.", ok: "Counts as success if they reach the source row in References unaided; record the number of clicks." },
+          { t: "Task 3 — Abstention: ask a question about a religious ruling (for example, is X obligatory?).", ok: "Counts as success if the reader understands that the atlas abstained and referred them to scholars, and did not take it as an answer." },
+        ],
+        obs: ["Reader (number only)", "Task", "Success?", "Clicks", "Where did they stumble?", "What did they suggest?"],
+        copy: "Copy the sheet", copied: "Copied", print: "Print the sheet",
+        note: "After each session: collect the notes without identity, revise the wording, and publish no figures until the test has actually been run.",
+      }} /></div>
+
       <h2 className="mt-12 text-2xl font-semibold">{ar ? "ما الذي يفعله الذكاء الاصطناعي هنا، وما لا يفعله" : "What the AI does here, and what it does not"}</h2>
       <ul className="mt-4 space-y-3 text-lg text-limestone/90">
         <li className="rule pt-3">{ar ? "يفعل: توجيه القالب حسب دولة الزائر أو خلفيته المعلنة، واسترجاع مقاطع من حزمة مغلقة بمطابقة لفظية، وإسناد كل جملة إلى معرّف مصدر، والامتناع والإحالة في الفتوى والحدود والردة والأحكام الخاصة بالجنسين والسياسة المعاصرة." : "It does: route the template by country or stated background, retrieve passages from a closed pack by lexical matching, attach a source id to every claim, and abstain with referral on fatwa, hudud, apostasy, gender rulings and contemporary politics."}</li>
@@ -77,7 +117,7 @@ export default function Evaluation() {
       <h2 className="mt-12 text-2xl font-semibold">{ar ? "التشغيل بعد التحدي" : "Operating it after the challenge"}</h2>
       <ul className="mt-4 space-y-3 text-lg text-limestone/90">
         <li className="rule pt-3">{ar ? "التكلفة: لا خادم ذكاء اصطناعي ولا مفتاح API؛ موقع Next.js على استضافة مجانية أو رخيصة، والبيانات ملفات JSON ضمن المستودع." : "Cost: no model server and no API key; a Next.js site on free or low-cost hosting, with data as JSON files in the repository."}</li>
-        <li className="rule pt-3">{ar ? "المراجعة: يراجع مختص شرعي كل قالب ومقطع قبل نشره، وتُجدَّد أرقام Pew مرة عند صدور جدول جديد، ويُعاد التحقق من روابط المراكز كل ربع سنة." : "Review: a qualified scholar reviews each template and passage before it ships, Pew figures are refreshed when a new table is published, and centre links are re-verified quarterly."}</li>
+        <li className="rule pt-3">{ar ? "المراجعة: يراجع مختص شرعي كل قالب ومقطع قبل نشره، وتُجدَّد أرقام Pew مرة عند صدور جدول جديد، ويُعاد التحقق من روابط المراكز كل ربع سنة." : "Review: a qualified scholar reviews each template and passage before it ships, Pew figures are refreshed when a new table is published, and centre links are re-verified quarterly."}</li>
         <li className="rule pt-3">{ar ? "الاختبار: هذه الصفحة وملف scripts/test-journey.mjs في المستودع يعملان على الموقع الحي وعلى المحلي." : "Testing: this page and scripts/test-journey.mjs in the repository run against the live site and locally."}</li>
       </ul>
       <p className="mt-10 flex flex-wrap gap-x-6 gap-y-2"><Link href="/references" className="lnk-strong">{ar ? "المراجع" : "References"}</Link><Link href="/method" className="lnk-strong">{ar ? "المنهج" : "Method"}</Link><a className="lnk-strong" href="https://github.com/tmrsa1-ui/islamic-religion-atlas" target="_blank" rel="noopener noreferrer">GitHub</a></p>
