@@ -16,14 +16,23 @@ export default function CountryPage({ params }: { params: { iso3: string } }) {
   const initial = runJourney({ iso3: c.iso3 });
   if ("error" in initial) notFound();
   return (
-    <div className="px-6 panel-in">
-      <article className="mx-auto max-w-3xl pt-8">
-        <Link href="/" className="underline text-limestone/80">{u("back", locale)}</Link>
-        <h1 className="mt-4 text-4xl md:text-5xl font-bold">{c.name[locale]}</h1>
-        <p className="latin text-limestone/60">{c.iso3}</p>
+    <div className="px-6"><div className="mx-auto max-w-6xl">
+      <div className="country-grid mt-8">
+      <article className="panel panel-in p-6 md:p-10">
+        <Link href="/" className="text-sm text-limestone/80 underline">{u("back", locale)}</Link>
+        <p className="folio mt-6">{c.iso3} · Pew 2020</p>
+        <h1 className="mt-1 text-4xl md:text-5xl font-semibold">{c.name[locale]}</h1>
         <div className="mt-8"><PewBars c={c} locale={locale} /></div>
         <div className="mt-8"><JourneyPanel initial={initial} locale={locale} /></div>
       </article>
-    </div>
+      <aside className="rail" aria-label={locale === "ar" ? "المصادر" : "Sources"}>
+        <p className="kicker mb-2">{locale === "ar" ? "للباحث" : "For researchers"}</p>
+        <Link href="/references#pew-country-table-2020">{u("footer_refs", locale)} · Pew 2020</Link>
+        <Link href="/references">{u("nav_refs", locale)}</Link>
+        <Link href="/method">{u("nav_method", locale)}</Link>
+        <Link href="/centers">{u("nav_centers", locale)}</Link>
+      </aside>
+      </div>
+    </div></div>
   );
 }

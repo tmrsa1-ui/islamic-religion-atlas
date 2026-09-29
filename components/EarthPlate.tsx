@@ -1,26 +1,15 @@
-import Link from "next/link";
-import { buildPlate } from "@/lib/geo";
-import { countries } from "@/lib/data";
+import { buildGlobeData } from "@/lib/geo";
 import type { Locale } from "@/lib/types";
 import { u } from "@/lib/i18n";
+import HomeExplorer, { type ListItem } from "./HomeExplorer";
 
-export default function EarthPlate({ locale }: { locale: Locale }) {
-  const p = buildPlate();
+export default function EarthPlate({ locale, items }: { locale: Locale; items: ListItem[] }) {
+  const d = buildGlobeData();
   return (
-    <div className="plate-wrap hidden md:block">
-      <svg viewBox="0 0 960 500" role="img" aria-label={u("plate_alt", locale)} className="w-full h-auto">
-        <path d={p.sphere} className="plate-sphere" />
-        <path d={p.graticule} className="plate-grat" />
-        <path d={p.land} className="plate-land" />
-        {p.lit.map((c) => {
-          const co = countries.find((x) => x.iso3 === c.iso3)!;
-          return (
-            <Link key={c.iso3} href={`/country/${c.iso3}`} aria-label={co.name[locale]}>
-              <path d={c.d} className="plate-lit"><title>{co.name[locale]}</title></path>
-            </Link>
-          );
-        })}
-      </svg>
-    </div>
+    <HomeExplorer locale={locale} land={d.land} geo={d.items} items={items} label={u("plate_alt", locale)}
+      placeholder={u("search", locale)} empty={u("noresults", locale)} all={locale === "ar" ? "الكل" : "All"}
+      hint={locale === "ar" ? "اسحب الكرة لتدويرها، أو مرّر على دولة في القائمة لتراها على الكرة." : "Drag the globe to turn it, or hover a country in the list to find it on the globe."}
+      prevLabel={locale === "ar" ? "تدوير الكرة إلى الجهة السابقة" : "Rotate the globe back"}
+      nextLabel={locale === "ar" ? "تدوير الكرة إلى الجهة التالية" : "Rotate the globe forward"} />
   );
 }
