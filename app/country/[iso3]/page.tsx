@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { countries, getCountry } from "@/lib/data";
 import { runJourney } from "@/lib/journey";
 import { getLocale, u } from "@/lib/i18n";
+import { groupLabels } from "@/lib/data";
 import PewBars from "@/components/PewBars";
 import JourneyPanel from "@/components/JourneyPanel";
 
@@ -22,6 +23,9 @@ export default function CountryPage({ params }: { params: { iso3: string } }) {
         <Link href="/" className="text-sm text-limestone/80 underline">{u("back", locale)}</Link>
         <p className="folio mt-6">{c.iso3} · Pew 2020</p>
         <h1 className="mt-1 text-4xl md:text-5xl font-semibold">{c.name[locale]}</h1>
+        {(() => { const top = [...c.composition].sort((a, b) => b.pct - a.pct)[0]; return (
+          <p className="lead-fig mt-6"><bdi dir="ltr" className="num lead-num">{top.pct}%</bdi><span className="lead-cap">{groupLabels[top.g][locale]} · {locale === "ar" ? "أكبر مجموعة (Pew 2020)" : "largest group (Pew 2020)"}</span></p>
+        ); })()}
         <div className="mt-8"><PewBars c={c} locale={locale} /></div>
         <div className="mt-8"><JourneyPanel initial={initial} locale={locale} /></div>
       </article>

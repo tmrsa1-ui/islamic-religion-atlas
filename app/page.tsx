@@ -23,11 +23,13 @@ export default function Home() {
         </p>
       </section>
       <section className="mx-auto max-w-6xl mt-10" id="countries" aria-labelledby="choose">
-        <h2 id="choose" className="text-2xl font-semibold mb-6">{u("choose", locale)}</h2>
+        <p className="sec-n">01</p>
+        <h2 id="choose" className="text-2xl md:text-3xl font-semibold mb-8">{u("choose", locale)}</h2>
         <EarthPlate locale={locale} items={items} />
       </section>
       <section className="mx-auto max-w-6xl mt-20" aria-labelledby="how">
-        <h2 id="how" className="text-2xl font-semibold mb-6">{ar ? "كيف تعمل الرحلة" : "How the journey works"}</h2>
+        <p className="sec-n">02</p>
+        <h2 id="how" className="text-2xl md:text-3xl font-semibold mb-8">{ar ? "كيف تعمل الرحلة" : "How the journey works"}</h2>
         <ol className="how">
           <li><span className="n">01</span><h3 className="text-lg font-semibold mt-1">{ar ? "تختار دولة" : "Choose a country"}</h3>
             <p className="mt-2 text-limestone/85">{ar ? "من الكرة أو القائمة. ترى التركيبة الدينية لعام 2020 من Pew، وكل نسبة رابط إلى صفها في المراجع." : "From the globe or the list. You see the 2020 religious composition from Pew, and every percentage links to its row in the references."}</p></li>

@@ -47,14 +47,14 @@ export default function Globe({ locale, land, borders, items, label, prevLabel, 
     mq.addEventListener?.("change", onMq);
     let raf = 0, last = performance.now(), lastPaint = 0;
     const born = performance.now();
-    const minGap = window.innerWidth < 600 ? 50 : 32;
+    const minGap = window.innerWidth < 600 ? 80 : 40;
     const tick = (t: number) => {
       const dt = Math.min(0.1, (t - last) / 1000); last = t;
       let next = lonRef.current;
       if (target.current !== null) {
         const diff = target.current - next;
         if (Math.abs(diff) < 0.2) { next = target.current; target.current = null; } else next += diff * Math.min(1, dt * 6);
-      } else if (t - born > 2500 && !reduced.current && !hover.current && !dragging.current && !listFocus.current && !upRef.current && !document.hidden && vis.current && t >= resumeAt.current) {
+      } else if (t - born > 800 && !reduced.current && !hover.current && !dragging.current && !listFocus.current && !upRef.current && !document.hidden && vis.current && t >= resumeAt.current) {
         next += dt * SPEED;
       }
       if (next !== lonRef.current) {
@@ -94,7 +94,7 @@ export default function Globe({ locale, land, borders, items, label, prevLabel, 
   };
 
   const proj = useMemo(() => geoOrthographic().translate([C, C]).scale(R).clipAngle(90).rotate([-lon, TILT, 0]), [lon]);
-  const path = useMemo(() => geoPath(proj).digits(1), [proj]);
+  const path = useMemo(() => geoPath(proj.precision(1.6)).digits(0), [proj]);
   const grat = useMemo(() => path(geoGraticule10()) || "", [path]);
   const landD = useMemo(() => path(land) || "", [path, land]);
   const bordD = useMemo(() => path(borders) || "", [path, borders]);
