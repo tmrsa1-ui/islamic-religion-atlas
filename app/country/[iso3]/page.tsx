@@ -26,7 +26,14 @@ export default function CountryPage({ params }: { params: { iso3: string } }) {
         <div className="mt-8"><JourneyPanel initial={initial} locale={locale} /></div>
       </article>
       <aside className="rail" aria-label={locale === "ar" ? "المصادر" : "Sources"}>
-        <p className="kicker mb-2">{locale === "ar" ? "للباحث" : "For researchers"}</p>
+        <p className="kicker mb-2">{locale === "ar" ? "مراحل الرحلة" : "Journey steps"}</p>
+        <ol className="steps" aria-label={locale === "ar" ? "مراحل الرحلة" : "Journey steps"}>
+          {(locale === "ar"
+            ? [["pew-sec", "١ التركيبة الدينية"], ["choose-bg", "٢ الخلفية (اختياري)"], ["hl", "٣ رؤوس أقلام"], ["dt", "٤ مفهوم واحد"], ["ask", "٥ سؤالك"], ["ct", "٦ مصدر أو مركز"]]
+            : [["pew-sec", "1 Composition"], ["choose-bg", "2 Background (optional)"], ["hl", "3 Headlines"], ["dt", "4 One concept"], ["ask", "5 Your question"], ["ct", "6 Source or centre"]]
+          ).map(([id, t]) => <li key={id}><a href={`#${id}`}>{t}</a></li>)}
+        </ol>
+        <p className="kicker mt-5 mb-2">{locale === "ar" ? "للباحث" : "For researchers"}</p>
         <Link href="/references#pew-country-table-2020">{u("footer_refs", locale)} · Pew 2020</Link>
         <Link href="/references">{u("nav_refs", locale)}</Link>
         <Link href="/method">{u("nav_method", locale)}</Link>

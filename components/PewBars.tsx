@@ -10,14 +10,14 @@ export default function PewBars({ c, locale }: { c: Country; locale: Locale }) {
   const hc = c.headcounts_2020_million;
   const heads = ORDER.filter((g) => hc[g] != null);
   return (
-    <section aria-labelledby="pew">
+    <section aria-labelledby="pew" id="pew-sec">
       <h2 id="pew" className="text-xl font-semibold">{u("pew_title", locale)}</h2>
       <ul className="mt-5 space-y-4">
         {sorted.map((r, i) => (
           <li key={r.g} className="pew-row">
             <div className="flex justify-between items-baseline gap-4">
               <span>{groupLabels[r.g][locale]}</span>
-              <Link href="/references#pew-country-table-2020" className="num pct underline" aria-label={`${r.pct}% — ${u("footer_refs", locale)}`}>{r.pct}%</Link>
+              <Link href="/references#pew-country-table-2020" className="num pct underline" aria-label={`${r.pct}% — ${u("footer_refs", locale)}`}><bdi dir="ltr">{r.pct}%</bdi></Link>
             </div>
             <div className="bar-track mt-1" aria-hidden><div className={`bar-fill ${i === 0 ? "top" : ""}`} style={{ width: `${r.pct}%` }} /></div>
           </li>
