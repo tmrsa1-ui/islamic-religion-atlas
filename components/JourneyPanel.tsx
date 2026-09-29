@@ -57,7 +57,7 @@ export default function JourneyPanel({ initial, locale }: { initial: JourneyResu
 
   return (
     <div aria-busy={busy}>
-      <div className="rule pt-6">
+      <div className="rule pt-6" id="choose-bg">
         <p className="kicker">{t("choose_bg")}</p>
         <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={t("choose_bg")}>
           {BACKGROUNDS.map((b) => (
@@ -152,7 +152,11 @@ export default function JourneyPanel({ initial, locale }: { initial: JourneyResu
           </ul>
         )}
       </section>
-      <p className="mt-10 rule pt-4"><Link className="underline" href="/references">{t("footer_refs")}</Link></p>
+      <div className="mt-10 rule pt-4 next-box">
+        <p className="kicker">{locale === "ar" ? "ماذا بعد؟" : "What next?"}</p>
+        <p className="mt-2">{locale === "ar" ? "اقرأ المصدر الذي تستند إليه الرحلة، أو جرّب خلفية أخرى لترى كيف يتغير الخطاب، أو ارجع إلى الأطلس واختر دولة أخرى. وللأسئلة الشرعية توجّه إلى أهل العلم في بلدك؛ الأطلس لا يفتي." : "Read the source the journey rests on, try another background to see how the framing changes, or go back to the atlas and pick another country. For religious rulings, ask scholars in your own country; the atlas issues none."}</p>
+        <p className="mt-3 flex flex-wrap gap-x-6 gap-y-2"><Link className="lnk-strong" href="/references">{t("footer_refs")}</Link><Link className="lnk-strong" href="/">{locale === "ar" ? "الأطلس" : "Atlas"}</Link><Link className="lnk-strong" href="/evaluation">{locale === "ar" ? "التحقق والاختبار" : "Verification"}</Link></p>
+      </div>
     </div>
   );
 }
