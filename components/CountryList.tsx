@@ -29,7 +29,7 @@ export default function CountryList({ items, locale, placeholder, empty, all, ac
               </span>
               <span className="flex items-center gap-3 mt-1">
                 <span className="mini-bar" aria-hidden><span style={{ width: `${i.pct}%` }} /></span>
-                <span className="text-sm text-limestone/75 whitespace-nowrap">{i.top}</span>
+                <bdi className="text-sm text-limestone/75 whitespace-nowrap">{i.top}</bdi>
               </span>
             </Link>
           </li>
