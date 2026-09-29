@@ -31,7 +31,7 @@ npm install && npm run dev      # http://localhost:3000
 npm run build && npm start      # production
 npm test                        # acceptance script against BASE (default http://localhost:3000)
 ```
-Node 18+ . No environment variables and no secrets are needed. Deployed on Netlify with `@netlify/plugin-nextjs` (see `netlify.toml`).
+Node 18+ . No environment variables and no secrets are needed.
 
 ## Routes
 `/` · `/country/[iso3]` · `/api/journey` · `/references` · `/centers` · `/method` · `/about`
@@ -41,10 +41,13 @@ France, Sweden, United States, Germany, United Kingdom, India, Japan, Thailand, 
 
 ## Design
 "Archival atlas at dusk": Void `#07090C`, Night earth `#0E1518`, Limestone `#E7E2D8`, Brass `#8A6520`, Sea ink `#1A2332`, Verdigris `#2E7A63` (selected), paper `#F6F3EC` / ink `#1C1915` (references). Missing data is muted clay, never alarm red. One Arabic face (Noto Naskh Arabic) and one Latin serif (EB Garamond) via `next/font`. Arabic by default with RTL; English toggle. `prefers-reduced-motion` disables all drift.
-The home page uses a **static SVG earth plate** (d3-geo + world-atlas, rendered on the server) plus a searchable country list; the list is the mobile experience and needs no WebGL. No 3D globe was added in this starter build.
+The home page pairs a **dusk-lit orthographic SVG globe** (d3-geo + world-atlas, no WebGL) with a searchable, filterable country list; the list is the mobile experience and the keyboard path.
+
+## Design pass 2 (29 Sep 2026)
+Restyle from Claude Design merged (brief: `docs/claude-design-brief.md`): flatter panels, folio/number typography, brass hairline links, muted-clay missing-data blocks, badge «خطاب ملائم لأغلبية هذه الدولة». Home earth redrawn as an orthographic SVG globe (`components/Globe.tsx`): Sea ink ocean, Night earth land with fine Limestone outlines, subtle graticule, limb glow and terminator shading, Brass marker rings on the 12 countries (Verdigris when hovered/focused), slow drift that pauses on hover/focus and is off under `prefers-reduced-motion`; drag or arrow buttons rotate it, and hovering a country in the list turns the globe to it (`components/HomeExplorer.tsx`). Also: sticky header, filter chips by largest group, animated detail expand/collapse, thicker Pew bars whose percentages link to `/references`, and a sticky "for researchers" source rail on country pages.
 
 ## Disclosure of prior visual language
-The team has earlier globe / visual-language work under the names **Falak, Adim and Ufuq**. This repository was created fresh for the atlas on 29 September 2026: no code or assets from those projects were copied into it, and the design here (archival atlas at dusk, static SVG earth plate) was written for this build. The judged work is that of **4–6 October 2026**.
+The team has earlier globe / visual-language work under the names **Falak, Adim and Ufuq**. This repository was created fresh for the atlas on 29 September 2026: no code or assets from those projects were copied into it, and the design here (archival atlas at dusk, SVG globe) was written for this build. The judged work is that of **4–6 October 2026**.
 
 ## Sources (closed pack)
 Pew Research Center (2020 composition; 2025 switching and drivers; 2018 U.S. note), University of Cambridge Centre of Islamic Studies reports (2013, 2016), van Nieuwkerk (2006), Köse (1996), Zebiri (2008), the Qur'anic text (quran.com), and official sites of listed centres. Full table: `/references`.
