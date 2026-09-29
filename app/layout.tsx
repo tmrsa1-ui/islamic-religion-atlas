@@ -4,7 +4,7 @@ import "./globals.css";
 import { getLocale, u } from "@/lib/i18n";
 import Header from "@/components/Header";
 
-const ar = Noto_Naskh_Arabic({ subsets: ["arabic"], variable: "--font-ar", display: "swap" });
+const ar = Noto_Naskh_Arabic({ subsets: ["arabic"], variable: "--font-ar", display: "swap", adjustFontFallback: false, fallback: ["Noto Naskh Arabic", "Traditional Arabic", "Geeza Pro", "serif"] });
 const latin = EB_Garamond({ subsets: ["latin"], variable: "--font-latin", display: "swap" });
 
 export const metadata: Metadata = {
