@@ -12,7 +12,7 @@ the journey, privacy, and never inferring or classifying the user's religion.
 | 2 | Usability, casual reader and researcher | 15% | Search, filter, globe and list both select; every percentage links to its source row; obvious reading flow; mobile is comfortable |
 | 3 | Arabic RTL typography | 10% | Correct RTL everywhere, Arabic line-height and size comfortable, numerals and Latin ids isolated, EN mirror is faithful |
 | 4 | Accessibility | 10% | Lighthouse a11y 100, keyboard reaches every action, visible focus, reduced-motion respected, contrast >= 4.5 on text |
-| 5 | Content trustworthiness | 15% | Sources closed and visible, abstains on rulings, «lا رقم مؤكد» for gaps, no proselytising, no invented numbers |
+| 5 | Content trustworthiness | 15% | Sources closed and visible, abstains on rulings, «لا رقم مؤكد» for gaps, no proselytising, no invented numbers |
 | 6 | Performance and real-browser behaviour | 10% | Lighthouse mobile perf >= 90, animation smooth, drag/hover/click verified in a real browser |
 | 7 | Competition fit (track 03 journey + judging criteria) | 25% | The journey (interest -> concept -> source -> centre) is legible from the home page; AI function, abstention and verification are shown, not just claimed; limits and operations are honest |
 
