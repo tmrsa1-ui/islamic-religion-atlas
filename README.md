@@ -1,3 +1,8 @@
+> [!NOTE]
+> **هذه النسخة الأولية (starter build).** النسخة الكاملة بالكرة الأرضية الليلية والقبول الآلي في CI هي
+> **[islamic-religion-atlas-globe](https://github.com/tmrsa1-ui/islamic-religion-atlas-globe)**.
+> This is the starter build; the complete version lives in **islamic-religion-atlas-globe**.
+
 # أطلس الدين الإسلامي — Islamic Religion Atlas
 
 Bathel 2026 challenge, **track 03** (interactive experiences and the knowledge journey for introducing and learning Islam).
@@ -61,3 +66,7 @@ Restyle from Claude Design merged (`docs/claude-design-brief.md`): flatter panel
 The home globe rotates continuously (about 7°/s) until the pointer is over it, focus enters it, the user drags/rotates it, or a country shape is clicked; it then pauses and resumes about 1.4 s after the pointer leaves or the drag ends. There is a visible Pause/Resume button. Under `prefers-reduced-motion` there is no auto-rotation. Countries are selectable by clicking their actual shape (not only the markers); marker links and keyboard access remain. Country names are drawn as labels (AR/EN) with collision avoidance and far-side fade.
 
 A scored quality loop is logged in `docs/graf-loop/` (RUBRIC.md, PROGRESS.md, cycle_1..7.md). The live `/evaluation` page runs the 10-case engine test on every request and shows the repeatability check, value over a single template (numbers and real side-by-side outputs), a copyable and printable reader test sheet, what was and was not user-tested, and the privacy statement.
+
+## License
+
+[MIT](LICENSE)
